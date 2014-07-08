@@ -1,0 +1,23 @@
+<plugin name='kerberos' version='0.9' grailsVersion='1.1 &gt; *'>
+  <author>Svt</author>
+  <authorEmail>valentinsvt@hotmail.com</authorEmail>
+  <title>A variation of the audit plugin to fit my needs</title>
+  <description> Automatically log change events for domain objects.
+
+    </description>
+  <type>KerberosGrailsPlugin</type>
+  <resources>
+    <resource>kerberos.AuditLogEvent</resource>
+    <resource>kerberos.Krbs</resource>
+    <resource>kerberos.KerberosService</resource>
+  </resources>
+  <repositories>
+    <repository name='grailsCentral' url='http://grails.org/plugins' />
+    <repository name='http://repo.grails.org/grails/core' url='http://repo.grails.org/grails/core/' />
+    <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
+  </repositories>
+  <dependencies />
+  <plugins />
+  <runtimePluginRequirements />
+  <behavior />
+</plugin>
