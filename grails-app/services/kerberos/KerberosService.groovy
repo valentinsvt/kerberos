@@ -80,49 +80,55 @@ class KerberosService {
 
                 case 2:
                     //update
-                    def ignore = noAuditables
-                    for (name in nameMap) {
-                        def originalValue = domain.getPersistentValue(name)
-                        def newValue = domain.properties[name]
-                        if(originalValue!=newValue){
-                            if (originalValue?.class?.toString() =~ pack ){
-                                //println  " name --> "+name+ " original "+originalValue+" clase "+originalValue.class
-                                // println "aqui deberia cambiar "
-                                originalValue = originalValue?.id
-                                newValue = newValue.id
-                                //println "original value cambiado "+originalValue+" domain "+newValue
+                   // println "update "+usuario+" "+perfil+" "+domain.class+"  "+controllerName+"/"+actionName
+
+                    if(usuario=="Sistema" && (domain.class=~"Departamento" || domain.class=~"Persona")){
+                        //println "es quartz no log"
+                    }else{
+                        def ignore = noAuditables
+                        for (name in nameMap) {
+                            def originalValue = domain.getPersistentValue(name)
+                            def newValue = domain.properties[name]
+                            if(originalValue!=newValue){
+                                if (originalValue?.class?.toString() =~ pack ){
+                                    //println  " name --> "+name+ " original "+originalValue+" clase "+originalValue.class
+                                    // println "aqui deberia cambiar "
+                                    originalValue = originalValue?.id
+                                    newValue = newValue.id
+                                    //println "original value cambiado "+originalValue+" domain "+newValue
+                                }
+                                if (!ignore.contains(name)) {
+                                    audt=new Krbs()
+                                    audt.usuario=usuario
+                                    audt.perfil=perfil
+                                    audt.accion=actionName
+                                    audt.controlador=controllerName
+                                    audt.campo=name
+                                    audt.dominio=domain.class
+                                    audt.fecha=new Date()
+                                    audt.operacion="UPDATE"
+                                    audt.registro=domain.id
+                                    audt.new_value=newValue
+                                    audt.old_value=originalValue
+
+                                    listAudt.add(audt)
+                                }
                             }
-                            if (!ignore.contains(name)) {
-                                audt=new Krbs()
-                                audt.usuario=usuario
-                                audt.perfil=perfil
-                                audt.accion=actionName
-                                audt.controlador=controllerName
-                                audt.campo=name
-                                audt.dominio=domain.class
-                                audt.fecha=new Date()
-                                audt.operacion="UPDATE"
-                                audt.registro=domain.id
-                                audt.new_value=newValue
-                                audt.old_value=originalValue
 
-                                listAudt.add(audt)
+                        }//for
+                        domain=null
+                        listAudt.each {aa->
+                            try {
+
+                                if(!aa.save())
+                                    println "error en el save 24 "+aa.errors
+
+                            } catch (e) {
+                                println "ERROR!!!: error en la auditoria 23 "
+                                println " audt " + e
                             }
+
                         }
-
-                    }//for
-                    domain=null
-                    listAudt.each {aa->
-                        try {
-
-                            if(!aa.save())
-                                println "error en el save 24 "+aa.errors
-
-                        } catch (e) {
-                            println "ERROR!!!: error en la auditoria 23 "
-                            println " audt " + e
-                        }
-
                     }
 
                     break;

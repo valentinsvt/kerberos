@@ -11,7 +11,7 @@ import org.springframework.web.context.request.RequestContextHolder
 
 
 class KerberosGrailsPlugin {
-    def version = "1.0"
+    def version = "1.1"
     def grailsVersion = '1.1 > *'
     def author = "Svt"
     def authorEmail = "valentinsvt@hotmail.com"
