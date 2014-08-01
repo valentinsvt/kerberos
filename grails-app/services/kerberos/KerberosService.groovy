@@ -94,7 +94,7 @@ class KerberosService {
                                     //println  " name --> "+name+ " original "+originalValue+" clase "+originalValue.class
                                     // println "aqui deberia cambiar "
                                     originalValue = originalValue?.id
-                                    newValue = newValue.id
+                                    newValue = newValue?.id
                                     //println "original value cambiado "+originalValue+" domain "+newValue
                                 }
                                 if (!ignore.contains(name)) {
